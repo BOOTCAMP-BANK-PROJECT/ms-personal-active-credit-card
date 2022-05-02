@@ -1,15 +1,22 @@
-package com.bootcamp.personal.active.creditcard.account.dto;
+package com.bootcamp.personal.active.creditcard.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class CreateCreditCardDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@Document
+public class CreditCard {
 
-    /*@Id
-    private String id;*/
+    @Id
+    private String id;
 
     private String idClient;
     private String description;
@@ -25,7 +32,7 @@ public class CreateCreditCardDto {
     private Date emitionDate;
 
     private short registrationStatus;
-    //private Date insertionDate;
+    private Date insertionDate;
     private String fk_insertionUser;
     private String insertionTerminal;
 
