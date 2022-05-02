@@ -16,4 +16,7 @@ public interface CreditCardService {
     public Mono<CreditCard> update(CreditCard creditCard);
 
     public Mono<CreditCard> delete(String id);
+
+    Mono<CreditCard> getByIdClient(String idClient);
+
 }

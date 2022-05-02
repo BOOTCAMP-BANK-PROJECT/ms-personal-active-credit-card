@@ -30,6 +30,11 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    public Mono<CreditCard> getByIdClient(String idClient) {
+        return repository.findByIdClient(idClient);
+    }
+
+    @Override
     public Mono<CreditCard> save(CreditCard creditCard) {
         return repository.findByIdClient(creditCard.getIdClient())
                 .map(sa -> {
