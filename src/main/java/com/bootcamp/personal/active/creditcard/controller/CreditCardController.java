@@ -13,15 +13,15 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 @RestController
-@RequestMapping("personal/passive/saving_creditCard")
-@Tag(name = "Personal Passive Product Saving CreditCard Type", description = "Manage Personal Passive Product saving creditCards type")
+@RequestMapping("personal/active/credit_card")
+@Tag(name = "Personal Active Credit Card", description = "Manage Personal Active Credit Cards accounts")
 @CrossOrigin(value = {"*"})
 @RequiredArgsConstructor
 public class CreditCardController {
 
     public final CreditCardService service;
 
-    @GetMapping//(value = "/fully")
+    @GetMapping
     public Mono<ResponseEntity<Flux<CreditCard>>> getAll() {
         return Mono.just(
                 ResponseEntity.ok()
