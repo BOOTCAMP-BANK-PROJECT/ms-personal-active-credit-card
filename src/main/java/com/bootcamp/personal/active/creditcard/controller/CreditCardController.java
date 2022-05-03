@@ -1,4 +1,4 @@
-package com.bootcamp.personal.active.creditcard.controlller;
+package com.bootcamp.personal.active.creditcard.controller;
 
 import com.bootcamp.personal.active.creditcard.entity.CreditCard;
 import com.bootcamp.personal.active.creditcard.service.CreditCardService;

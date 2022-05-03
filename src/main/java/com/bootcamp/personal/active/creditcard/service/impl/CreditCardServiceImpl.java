@@ -49,6 +49,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 .switchIfEmpty(Mono.defer(() -> {
                             creditCard.setId(null);
                             creditCard.setInsertionDate(new Date());
+                            creditCard.setRegistrationStatus((short) 1);
+
                             return repository.save(creditCard);
                         }
                 ))
