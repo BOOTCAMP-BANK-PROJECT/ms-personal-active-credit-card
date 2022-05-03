@@ -2,8 +2,10 @@ package com.bootcamp.personal.active.creditcard.service.impl;
 
 
 import com.bootcamp.personal.active.creditcard.entity.CreditCard;
+import com.bootcamp.personal.active.creditcard.entity.Movement;
 import com.bootcamp.personal.active.creditcard.repository.CreditCardRepository;
 import com.bootcamp.personal.active.creditcard.service.CreditCardService;
+import com.bootcamp.personal.active.creditcard.service.WebClientService;
 import com.bootcamp.personal.active.creditcard.util.Constant;
 import com.bootcamp.personal.active.creditcard.util.handler.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -18,6 +21,8 @@ import java.util.Date;
 public class CreditCardServiceImpl implements CreditCardService {
 
     public final CreditCardRepository repository;
+
+    public final WebClientService webClient;
 
     @Override
     public Flux<CreditCard> getAll() {
@@ -50,8 +55,16 @@ public class CreditCardServiceImpl implements CreditCardService {
                             creditCard.setId(null);
                             creditCard.setInsertionDate(new Date());
                             creditCard.setRegistrationStatus((short) 1);
-
-                            return repository.save(creditCard);
+                            return repository.save(creditCard).map(cc -> {
+                                webClient
+                                        .getWebClient()
+                                        .post()
+                                        .uri("movement")
+                                        .bodyValue(generateCardLine(cc))
+                                        .retrieve()
+                                        .bodyToMono(Movement.class);
+                                return cc;
+                            });
                         }
                 ))
                 .onErrorResume(e -> Mono.error(e)).cast(CreditCard.class);
@@ -88,4 +101,13 @@ public class CreditCardServiceImpl implements CreditCardService {
                         "update.onErrorResume"
                 )));
     }
+
+    private Movement generateCardLine(CreditCard creditCard) {
+        return new Movement(null, creditCard.getCreditCardLine(),
+                Constant.ID_BANK, creditCard.getId(), new Date(),
+                creditCard.getIsoCurrencyCode(), Constant.CREATION_CARD, Constant.INITIAL_CARD,
+                true, new Date(), creditCard.getFk_insertionUser(), creditCard.getInsertionTerminal(),
+                creditCard.getRegistrationStatus());
+    }
+
 }

@@ -29,6 +29,8 @@ public class CreditCardApplication implements CommandLineRunner {
 	@Autowired
 	private Environment env;
 
+	private static String apiGateway;
+
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -38,6 +40,8 @@ public class CreditCardApplication implements CommandLineRunner {
 		logger.info("Properties file upload status: " + env.getProperty("my-own-app.properties.status"));
 		logger.info("Swagger: http://localhost:" + env.getProperty("server.port") +"/" + env.getProperty("springdoc.swagger-ui.path"));
 	}
+
+	public static String getApiGateway() { return apiGateway; }
 
 	public static void main(String[] args) {
 		SpringApplication.run(CreditCardApplication.class, args);
