@@ -52,6 +52,14 @@ public class CreditCardServiceImpl implements CreditCardService {
                     );
                 })
                 .switchIfEmpty(Mono.defer(() -> {
+                    webClient
+                            .getWebClient()
+                            .post()
+                            .uri("movement")
+                            .bodyValue(creditCard.getIdClient())
+                            .retrieve()
+                            .bodyToMono(Boolean.class).flatMap(rs->rs==true);
+
                             creditCard.setId(null);
                             creditCard.setInsertionDate(new Date());
                             creditCard.setRegistrationStatus((short) 1);

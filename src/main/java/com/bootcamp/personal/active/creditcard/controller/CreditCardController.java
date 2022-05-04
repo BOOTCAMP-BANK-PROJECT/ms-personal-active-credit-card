@@ -39,6 +39,15 @@ public class CreditCardController {
         );
     }
 
+    @GetMapping("/{idCreditCard}")
+    public Mono<ResponseEntity<Mono<CreditCard>>> getByIdCreditCard(@PathVariable String idCreditCard) {
+        return Mono.just(
+                ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(service.getById(idCreditCard))
+        );
+    }
+
     @PostMapping
     public Mono<ResponseEntity<CreditCard>> create(@RequestBody CreditCard creditCard) {
 
